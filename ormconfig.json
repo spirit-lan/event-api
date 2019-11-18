@@ -1,0 +1,13 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 5432,
+  "username": "spiritlan_T4s3SYDe",
+  "password": "qFB6BdZcdrhX.]6K",
+  "database": "spirit_event",
+  "entities": ["src/model/*.ts"],
+  "migrations": ["migrations/*.ts"],
+  "cli": {
+    "migrationsDir": "migrations"
+  }
+}
