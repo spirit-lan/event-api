@@ -5,7 +5,7 @@
   "username": "spiritlan_T4s3SYDe",
   "password": "qFB6BdZcdrhX.]6K",
   "database": "spirit_event",
-  "entities": ["src/model/*.ts"],
+  "entities": ["src/model/dto/*.ts"],
   "migrations": ["migrations/*.ts"],
   "cli": {
     "migrationsDir": "migrations"
