@@ -1,10 +1,6 @@
 import express, { Request, Response } from "express";
-import bcrypt from "bcrypt-nodejs";
-import { check, validationResult } from "express-validator";
 import { RegisterValidator } from "../validator/register-validator";
 import { User } from "../model/user";
-import { getRepository } from "typeorm";
-import { DbUser } from "../model/dto/db-user";
 import { UserService } from "../service/user-service";
 
 export class AuthController {
