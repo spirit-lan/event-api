@@ -1,4 +1,4 @@
-import { PrimaryGeneratedColumn, Column, Entity } from "typeorm";
+import { PrimaryGeneratedColumn, Column, Entity, CreateDateColumn, UpdateDateColumn } from "typeorm";
 @Entity("USER")
 export class DbUser {
   @PrimaryGeneratedColumn("uuid")
@@ -13,4 +13,10 @@ export class DbUser {
   password: string;
   @Column()
   birthdate: Date;
+  @Column()
+  deleted: Boolean;
+  @CreateDateColumn()
+  createdAt: Date;
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

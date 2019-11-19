@@ -4,7 +4,9 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "start": "nodemon"
+    "start": "nodemon",
+    "typeorm:add": "ts-node ./node_modules/typeorm/cli.js migration:generate -n migration",
+    "typeorm:apply": "ts-node ./node_modules/typeorm/cli.js migration:run"
   },
   "author": "",
   "license": "ISC",
@@ -16,6 +18,7 @@
   "dependencies": {
     "@types/express": "^4.17.2",
     "@types/express-validator": "^3.0.0",
+    "@types/node": "^12.12.9",
     "express": "^4.17.1",
     "express-validator": "^6.2.0",
     "pg": "^7.12.1",
