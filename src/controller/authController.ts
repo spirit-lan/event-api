@@ -1,56 +1,50 @@
-import express, { Request, Response } from 'express';
+import express, { Request, Response } from "express";
 import bcrypt from "bcrypt-nodejs";
 import { check, validationResult } from "express-validator";
-import { RegisterValidator } from '../validator/register-validator';
-import { User } from '../model/user';
-import { getRepository } from 'typeorm';
-import { DbUser } from '../model/dto/db-user';
+import { RegisterValidator } from "../validator/register-validator";
+import { User } from "../model/user";
+import { getRepository } from "typeorm";
+import { DbUser } from "../model/dto/db-user";
+import { UserService } from "../service/user-service";
 
 export class AuthController {
-    login(req: Request, res: Response) {
-        const errors = validationResult(req)
-        if (!errors.isEmpty()) {
-            return res.status(422).json({ errors: errors.array() })
-        }
-        res.json({ message: 'Hello auth/login' })
+  async login(req: Request, res: Response) {
+    let login = req.body.login;
+    let password = req.body.password;
+    let service = new UserService();
+
+    let user = await service.exist(login, password);
+
+    //todo generate token
+    if (user) res.json(user);
+    else res.status(401).json({ error: "Incorrect login" });
+  }
+
+  async register(req: Request, res: Response) {
+    let user = req.body as User;
+    let service = new UserService();
+
+    try {
+      user = await service.create(user);
+      res.json(user);
+    } catch (err) {
+      res.status(409).json({ error: err });
     }
-
-    register(req: Request, res: Response) {
-        let user = req.body as User;
-
-        bcrypt.genSalt(10, (err, salt) => {
-
-            bcrypt.hash(user.password, salt, undefined, (err, hash) => {
-
-                user.password = hash;
-                user.deleted = false;
-                var repo = getRepository(DbUser);
-
-                repo.findOneOrFail({ where: [{ email: user.email }] }).then(result => {
-                    return res.status(409).json({
-                        errors: {global :"User already exist"}
-                    })
-                }).catch(result => {
-                    repo.save(user).then(usr =>
-                        res.json({ user: usr })
-                    )
-                })
-
-            });
-
-        });
-    }
+  }
 }
 
 export class AuthControllerRouting {
-
-    public static routes(): express.Router {
-        const authRoutes = express.Router();
-        let controller: AuthController = new AuthController();
-        let rValidator = new RegisterValidator();
-        authRoutes.post('/login', controller.login);
-        authRoutes.post('/register', rValidator.rules, rValidator.validate, controller.register);
-        return authRoutes;
-    }
+  public static routes(): express.Router {
+    const authRoutes = express.Router();
+    let controller: AuthController = new AuthController();
+    let rValidator = new RegisterValidator();
+    authRoutes.post("/login", controller.login);
+    authRoutes.post(
+      "/register",
+      rValidator.rules,
+      rValidator.validate,
+      controller.register
+    );
+    return authRoutes;
+  }
 }
-
