@@ -8,6 +8,8 @@ export class DbUser {
   @Column()
   lastname: string;
   @Column()
+  pseudo: string;
+  @Column()
   email: string;
   @Column()
   password: string;

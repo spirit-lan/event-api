@@ -1,5 +1,4 @@
 import express from "express";
-import bodyParser from "body-parser";
 import { createConnection } from "typeorm";
 import { AuthControllerRouting } from "./controller/authController";
 
@@ -18,8 +17,6 @@ export class Server {
   private config() {
     this.app.set("port", this.port);
     this.app.use(express.json()); // to support JSON-encoded bodies
-    this.app.use(express.urlencoded()); // to support URL-encoded bodies
-    this.app.use(bodyParser());
   }
 
   public start() {
