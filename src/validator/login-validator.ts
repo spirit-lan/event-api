@@ -11,7 +11,4 @@ export class LoginValidator extends Validator{
             body('password').exists().withMessage('password is required')
         ]
     }
-
-    
-   
 }

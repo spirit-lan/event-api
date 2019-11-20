@@ -1,7 +1,10 @@
 import express, { Request, Response } from "express";
+import jwt from "jsonwebtoken";
 import { RegisterValidator } from "../validator/register-validator";
+import { LoginValidator } from "../validator/login-validator";
 import { User } from "../model/user";
 import { UserService } from "../service/user-service";
+
 
 export class AuthController {
   async login(req: Request, res: Response) {
@@ -9,11 +12,20 @@ export class AuthController {
     let password = req.body.password;
     let service = new UserService();
 
-    let user = await service.exist(login, password);
-
-    //todo generate token
-    if (user) res.json(user);
-    else res.status(401).json({ error: "Incorrect login" });
+    let user = await service.getByLoginPassword(login, password);
+    if (user) {
+      var tokentContent = {
+        id: user.id,
+        email: user.email,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        pseudo: user.pseudo,
+        birthdate: user.birthdate
+      }
+      let token = jwt.sign(JSON.stringify(tokentContent), 'superspirit')
+      res.json({ token: token })
+    }
+    else res.status(401).json({ error: "Incorrect login" })
   }
 
   async register(req: Request, res: Response) {
@@ -33,14 +45,13 @@ export class AuthControllerRouting {
   public static routes(): express.Router {
     const authRoutes = express.Router();
     let controller: AuthController = new AuthController();
-    let rValidator = new RegisterValidator();
-    authRoutes.post("/login", controller.login);
-    authRoutes.post(
-      "/register",
-      rValidator.rules,
-      rValidator.validate,
-      controller.register
-    );
+
+    let loginValidator = new LoginValidator();
+    authRoutes.post("/login", loginValidator.rules, loginValidator.validate, controller.login);
+
+    let registerValidator = new RegisterValidator();
+    authRoutes.post("/register", registerValidator.rules, registerValidator.validate, controller.register);
+
     return authRoutes;
   }
 }

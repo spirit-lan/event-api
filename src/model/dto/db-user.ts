@@ -1,4 +1,5 @@
-import { PrimaryGeneratedColumn, Column, Entity, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { PrimaryGeneratedColumn, Column, Entity, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinTable } from "typeorm";
+import { DbRole } from "./db-role";
 @Entity("USER")
 export class DbUser {
   @PrimaryGeneratedColumn("uuid")
@@ -21,4 +22,8 @@ export class DbUser {
   createdAt: Date;
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @ManyToMany(type => DbRole)
+  @JoinTable({name: 'USER_ROLES'})
+  roles: DbRole[]
 }
