@@ -1,5 +1,5 @@
 import { UserService } from "./user-service";
-import { LostPasswordToken } from "../model/LostPasswordToken";
+import { LostPasswordToken } from "../model/lostPasswordToken";
 import { TokenGenerator, TokenBase } from "ts-token-generator";
 import { Repository, getRepository, getConnection, Not } from "typeorm";
 
@@ -10,7 +10,7 @@ export class TokenService {
         this.repository = getRepository(LostPasswordToken);
     }
 
-    async setLostPasswordToken(email: string): Promise<void | LostPasswordToken> {
+    async setLostPasswordToken(email: string): Promise<LostPasswordToken> {
         let service = new UserService();
         let user = await service.getByEmail(email);
 
@@ -19,19 +19,20 @@ export class TokenService {
             lostPasswordToken.token = this.generateToken();
             lostPasswordToken.email = user.email
             return this.repository.save(lostPasswordToken)
-                        .then(token => {
+                        .then((token) => {
                             getConnection().createQueryBuilder()
                                 .update(LostPasswordToken)
                                 .set({deleted: true})
                                 .where({ token: Not(token.token)})
                                 .execute()
-                        })
-                        .catch(err => { console.log(err)});
+                        }) as Promise<LostPasswordToken>
+                        
         }
+        throw 'User not found'
     }
 
     async getLostPasswordToken(token: string): Promise<LostPasswordToken> {
-        return this.repository.findOne({
+        return this.repository.findOneOrFail({
             where: [
                 { token: token, deleted: false }
             ]

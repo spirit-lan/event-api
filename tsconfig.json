@@ -2,11 +2,14 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
+    "outDir": "dist",
     "rootDir": "src",
+    "strict": true,
     "sourceMap": true,
     "resolveJsonModule": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
     "lib": [
       "es6",
       "dom"

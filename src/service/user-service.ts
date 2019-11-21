@@ -17,7 +17,7 @@ export class UserService {
   async create(user: User): Promise<User> {
    
     let dbUser = await this.repository.findOne({ where: [{ email: user.email, deleted: false }] });
-    if (dbUser) return null;
+    if (dbUser) throw 'Email already exist';
 
     user.password = this.generatePassword(user.password);
     user.deleted = false;
@@ -25,7 +25,7 @@ export class UserService {
     return this.repository.save(user);
   }
 
-  async getAuthToken(login: string, password: string): Promise<string> {
+  async getAuthToken(login: string, password: string): Promise<null | string> {
     let dbUser = await this.repository.findOne({ where: [{ email: login }] });
 
     if (!dbUser) return null;
@@ -61,7 +61,7 @@ export class UserService {
     return await this.repository.findOneOrFail({ where: [{ id: id }], relations: ["roles"] })
   }
 
-  async getByEmail(email: string) : Promise<User>{
+  async getByEmail(email: string) : Promise<void | User>{
     return await this.repository.findOne({where: [{email: email}]});
   }
 

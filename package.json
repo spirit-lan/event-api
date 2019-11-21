@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon",
     "typeorm:add": "ts-node ./node_modules/typeorm/cli.js migration:generate -n migration",
-    "typeorm:apply": "ts-node ./node_modules/typeorm/cli.js migration:run"
+    "typeorm:apply": "ts-node ./node_modules/typeorm/cli.js migration:run",
+    "build": "tsc -p ."
   },
   "author": "",
   "license": "ISC",

@@ -15,7 +15,7 @@ export class Validator {
             return next()
         }
 
-        const extractedErrors = []
+        const extractedErrors: any[] = []
         errors.array().map(err => extractedErrors.push({ [err.param]: err.msg }))
 
         return res.status(422).json({
