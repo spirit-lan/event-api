@@ -37,26 +37,6 @@ export class UserService {
     return token;
   }
 
-  private generateAuthToken(user: User): string {
-    var tokentContent = {
-      id: user.id,
-      email: user.email,
-      firstname: user.firstname,
-      lastname: user.lastname,
-      pseudo: user.pseudo,
-      birthdate: user.birthdate
-    }
-
-    let token = jwt.sign(JSON.stringify(tokentContent), 'superspirit')
-    return token;
-  }
-
-  private generatePassword(clearString: string) : string{
-    let salt = bcrypt.genSaltSync(10);
-    let hash = bcrypt.hashSync(clearString, salt);
-    return hash;
-  }
-
   async getById(id: string): Promise<User> {
     return await this.repository.findOneOrFail({ where: [{ id: id }], relations: ["roles"] })
   }
@@ -81,5 +61,25 @@ export class UserService {
     this.repository.save(user).then(user => {
       tokenService.deleteToken(tok)
     });
+  }
+
+  private generateAuthToken(user: User): string {
+    var tokentContent = {
+      id: user.id,
+      email: user.email,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      pseudo: user.pseudo,
+      birthdate: user.birthdate
+    }
+
+    let token = jwt.sign(JSON.stringify(tokentContent), 'superspirit')
+    return token;
+  }
+
+  private generatePassword(clearString: string) : string{
+    let salt = bcrypt.genSaltSync(10);
+    let hash = bcrypt.hashSync(clearString, salt);
+    return hash;
   }
 }
