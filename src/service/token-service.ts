@@ -1,7 +1,7 @@
 import { UserService } from "./user-service";
 import { LostPasswordToken } from "../model/LostPasswordToken";
 import { TokenGenerator, TokenBase } from "ts-token-generator";
-import { Repository, getRepository } from "typeorm";
+import { Repository, getRepository, getConnection, Not } from "typeorm";
 
 export class TokenService {
 
@@ -18,7 +18,15 @@ export class TokenService {
             let lostPasswordToken = new LostPasswordToken()
             lostPasswordToken.token = this.generateToken();
             lostPasswordToken.email = user.email
-            return this.repository.save(lostPasswordToken).catch(err => { console.log(err)});
+            return this.repository.save(lostPasswordToken)
+                        .then(token => {
+                            getConnection().createQueryBuilder()
+                                .update(LostPasswordToken)
+                                .set({deleted: true})
+                                .where({ token: Not(token.token)})
+                                .execute()
+                        })
+                        .catch(err => { console.log(err)});
         }
     }
 
