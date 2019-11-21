@@ -1,3 +1,11 @@
-import { DbRole } from "./dto/db-role";
+import { PrimaryGeneratedColumn, Column, Entity } from "typeorm";
 
-export class Role extends DbRole {}
+@Entity("SP_ROLE")
+export class Role {
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
+  @Column()
+  code: string;
+  @Column()
+  name: string;
+}
