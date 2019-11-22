@@ -1,10 +1,10 @@
 {
-  "type": "postgres",
-  "host": "localhost",
-  "port": 5432,
-  "username": "spiritlan_T4s3SYDe",
-  "password": "qFB6BdZcdrhX.]6K",
-  "database": "spirit_event",
+  "type": "mysql",
+  "host": "109.234.162.102",
+  "port": 3306,
+  "username": "spiritlan_event",
+  "password": "S3LT`TQ7K4Qmyt%b!hM#]jB9_x;atjCW",
+  "database": "spiritlan_event",
   "entities": ["src/model/*.ts"],
   "migrations": ["migrations/*.ts"],
   "cli": {
