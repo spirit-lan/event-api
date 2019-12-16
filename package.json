@@ -5,6 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "start": "nodemon",
+    "typeorm": "ts-node ./node_modules/typeorm/cli.js",
     "typeorm:add": "ts-node ./node_modules/typeorm/cli.js migration:generate -n migration",
     "typeorm:apply": "ts-node ./node_modules/typeorm/cli.js migration:run",
     "build": "tsc -p ."

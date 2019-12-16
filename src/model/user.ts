@@ -1,4 +1,12 @@
-import { PrimaryGeneratedColumn, Column, Entity, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinTable } from "typeorm";
+import {
+  PrimaryGeneratedColumn,
+  Column,
+  Entity,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToMany,
+  JoinTable
+} from "typeorm";
 import { Role } from "./role";
 
 @Entity("SP_USER")
@@ -24,6 +32,6 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
   @ManyToMany(type => Role)
-  @JoinTable({name: 'USER_ROLES'})
-  roles: Role[]
+  @JoinTable({ name: "USER_ROLES" })
+  roles: Role[];
 }
